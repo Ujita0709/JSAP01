@@ -23,15 +23,27 @@ th, td {
     <th>操作</th>
   </tr>
 </table>
+
+<!-- 会員情報を格納するテンプレート -->
+<template id="member-row">
+<tr>
+ <td><!-- 会員番号 --></td>
+ <td><!-- 氏名 --></td>
+ <td><!-- 年齢 --></td>
+ <td><button>削除</button></td>
+</tr>
+</template>
 <script>
 //会員テーブルの1行分を生成する関数
 //@param memberオブジェクト(id, name, ageプロパティを持つ)
 function createRow(member){ 
 
+//テンプレートの要素を複製
+const template = document.getElementById('member-row');
+const clone = document.importNode(template.content, true); 
+
 //削除ボタンの作成
 const button = document.createElement('button'); 
-//ボタンにつける文字列
-button.textContent = '削除';
 //イベントリスナーの付与
 button.addEventListener('click', e =>{
   //親(td)の親要素(tr)の削除
@@ -40,24 +52,17 @@ button.addEventListener('click', e =>{
 
 //td要素の生成
 //会員番号
-const td1 = document.createElement('td');
+const td1 = clone.querySelector('td:nth-child(1)');
 td1.textContent = member.id;
 //氏名
-const td2 = document.createElement('td');
+const td2 = clone.querySelector('td:nth-child(2)');
 td2.textContent = member.name;
 //年齢
-const td3 = document.createElement('td');
+const td3 = clone.querySelector('td:nth-child(3)');
 td3.textContent = member.age;
-//操作（削除ボタン）
-const td4 = document.createElement('td');
-td4.append(button);
-
-//tr要素にtd要素を追加
-const tr = document.createElement('tr');
-tr.append(td1, td2, td3, td4);
 
 //tr要素をテーブルに追加
-document.getElementById('member-table').append(tr);
+document.getElementById('member-table').append(clone);
 }
 
 //表示させる会員のリスト
